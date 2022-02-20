@@ -1,0 +1,11 @@
+.env
+.idea
+venv
+*.pyc
+media
+db_sqlite
+python/
+mypython/
+media/
+
+
