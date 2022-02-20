@@ -27,9 +27,9 @@ class CoupeDay(models.Model):
     # record of one day in coupe
     date = models.DateField(unique=True)
     collected_eggs = models.IntegerField()
-    flock = models.ForeignKey(Flock)
+    flock = models.ForeignKey(Flock, on_delete=models.PROTECT)
     notes = models.CharField(max_length=255)
-    weather = models.OneToOneField(Weather)
-    feed = models.ForeignKey(Feed)
+    weather = models.OneToOneField(Weather, on_delete=models.CASCADE)
+    feed = models.ForeignKey(Feed, on_delete=models.PROTECT)
     feed_amount_kg = models.DecimalField(max_digits=4, decimal_places=1)
 
