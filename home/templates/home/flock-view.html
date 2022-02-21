@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 {% load static %}
 {% block title %}flocks{% endblock %}
 
 {% block content %}
     <body class="bg-light">
-    <div class="card mb-3">
+
+    <div class="card mb-3 ">
         <div class="card-body">
             <h1> List of all flocks </h1>
         </div>
@@ -15,7 +17,7 @@
             <div class="row">
                 <div class="col-9">
                     <div>
-                        <div class="card-body">
+                        <div class="card-body mb-3">
                             <h5 class="card-title">{{ flock.name }}</h5>
                             <p class="card-text">Number of birds in flock: {{ flock.birds_count }}</p>
                             <p class="card-text">Breed of birds {{ flock.breed }}</p>
@@ -23,10 +25,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3 card-body">
-                    <div class="btn-group-vertical">
-                        <a href="#" class="btn btn-light">Remove</a>
-                        <a href="#" class="btn btn-light">Modify</a>
+                <div class="col-3 card-body  ">
+                    <div class="btn-group-vertical ">
+                        <a href="#" class="btn btn-outline-danger m-3 ">Remove</a>
+                        <a href="#" class="btn btn-outline-success m-3">Modify</a>
                     </div>
                 </div>
             </div>
@@ -41,18 +43,33 @@
     {% endfor %}
 
 
-        <div class="card-body mb-3" >
-            <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
-                <h1>Add a new flock</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mt-3">
+            <div class="card-body mb-3">
+                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
+                    <h1>Add a new flock</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-3 col-sm-4">
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-4">
+                        {{ form.breed|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-4">
+                        {{ form.birds_count|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ form.notes|as_crispy_field }}
+                    <input class="btn btn-primary" type="submit" value="Submit">
+                </div>
             </div>
         </div>
-
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input class="btn btn-primary" type="submit" value="Submit">
-            </form>
-    
-
+    </form>
     </body>
 {% endblock %}
