@@ -16,10 +16,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active display-6" aria-current="page" href="#">Dashboard</a>
+        <a class="nav-link active display-6" aria-current="page" href="{% url 'home:index' %}">Dashboard</a>
         <a class="nav-link display-6" href="{% url 'home:flocks' %}">FLock</a>
-        <a class="nav-link display-6" href="#">Feed</a>
-        <a class="nav-link display-6" href="">Records</a>
+        <a class="nav-link display-6" href="{% url 'home:feed' %}">Feed</a>
+        <a class="nav-link display-6" href="{%  url 'home:records' %}">Records</a>
       </div>
     </div>
   </div>

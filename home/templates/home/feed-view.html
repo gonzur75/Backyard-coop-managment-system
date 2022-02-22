@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block title %}feed{% endblock %}
+
+{% block content %}
+    <body class="bg-light">
+    <div class="card mb-3 ">
+        <div class="card-body">
+            <h1> List of Feeds </h1>
+        </div>
+    </div>
+    {% for feed in feed_list %}
+        <div class="card mb3">
+            <div class="row">
+                <div class="col-9">
+                    <div>
+                        <div class="card-body mb-3">
+                            <h5 class="card-title">{{ feed.name }}</h5>
+                            <p class="card-text">Feed ingredients: {{ feed.ingredients}} </p>
+                            <p class="card-text">Breed of birds {{ feed.breed }}</p>
+                            <p class="card-text">Notes for this feed: {{ feed.notes }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 card-body  ">
+                    <div class="btn-group-vertical ">
+                        <a href="#" class="btn btn-outline-danger m-3 ">Remove</a>
+                        <a href="#" class="btn btn-outline-success m-3">Modify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% empty %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5> No feeds in database yet. Pleas add one below </h5>
+            </div>
+        </div>
+    {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mt-3">
+            <div class="card-body mb-3">
+                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
+                    <h1>Add a new Feed</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3 ">
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                <div class="row">
+                    <div class="mb-3 col-sm-6">
+                        {{ form.ingredients|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                        {{ form.notes|as_crispy_field }}
+                    </div>
+                </div>
+                    <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+    </body>
+{% endblock %}

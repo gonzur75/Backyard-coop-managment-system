@@ -1,12 +1,33 @@
 from django import forms
 
-from.models import Flock
+from .models import Flock, Feed, CoupeDay
 
 
 class FlockForm(forms.ModelForm):
     class Meta:
         model = Flock
-        fields = {'name', 'birds_count', 'breed', 'notes'}
+        fields = {'name', 'birds_count', 'breed', 'notes', 'location'}
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 5})
+        }
+
+
+class FeedForm(forms.ModelForm):
+    class Meta:
+        model = Feed
+        fields = {'name', 'ingredients', 'notes'}
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 5}),
+            'ingredients': forms.Textarea(attrs={'rows': 5})
+        }
+
+
+class CoupeDayForm(forms.ModelForm):
+    class Meta:
+        model = CoupeDay
+        fields = {'date', 'collected_eggs', 'flock', 'notes', 'feed', 'feed_amount_kg', }
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 5}),
+            'date': forms.DateInput(attrs={'type': 'date'}),
+
         }

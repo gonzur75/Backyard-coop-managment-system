@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}records{% endblock %}
+
+{% block content %}
+    <body class="bg-light">
+    <div class="card mb-3 ">
+        <div class="card-body">
+            <h1> Five most recent records </h1>
+        </div>
+    </div>
+    {% for record in records %}
+        <div class="card mb3 mt-3">
+            <div class="row">
+                <div class="col-9">
+                    <div>
+                        <div class="card-body mb-3">
+                            <h5 class="card-title">Record date : {{ record.date }}</h5>
+                            <p class="card-text">Number of collected eggs: {{ record.collected_eggs }}</p>
+                            <p class="card-text">Flock name - {{ record.flock.name }}</p>
+                            <p class="card-text">Weather on the day {{ record.weather.description }}, średnia temperatura - {{ reckord.weather.temp}} </p>
+                            <p class="card-text">Feed that was used: {{ record.feed.name }} and amount that was used: {{ record.feed_amount_kg }} kg </p>
+                            <p class="card-text">Notes for this flock: {{ record.notes }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 card-body mb3  ">
+                    <div class="btn-group-vertical ">
+                        <a href="#" class="btn btn-outline-danger m-3 ">Remove</a>
+                        <a href="#" class="btn btn-outline-success m-3">Modify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% empty %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5> No records in database yet. Pleas add one below </h5>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mt-3">
+            <div class="card-body mb-3">
+                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
+                    <h1>Add a reckord</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div aria-label="liable" class="mb-3 col-sm-3">
+                        {{ form.date|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.collected_eggs|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.flock|as_crispy_field }}
+                    </div>
+                </div><div class="row">
+                    <div aria-label="liable" class="mb-3 col-sm-3">
+                        {{ form.feed|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.feed_amount_kg|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ for }}
+                    {{ form.notes|as_crispy_field }}
+                    {{ form.weather }}
+                </div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+    </body>
+{% endblock %}

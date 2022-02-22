@@ -54,20 +54,23 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="mb-3 col-sm-4">
+                    <div class="mb-3 col-sm-3">
                         {{ form.name|as_crispy_field }}
                     </div>
-                    <div class="mb-3 col-sm-4">
+                    <div class="mb-3 col-sm-3">
                         {{ form.breed|as_crispy_field }}
                     </div>
-                    <div class="mb-3 col-sm-4">
+                    <div class="mb-3 col-sm-3">
                         {{ form.birds_count|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.location|as_crispy_field }}
                     </div>
                 </div>
                 <div class="mb-3">
                     {{ form.notes|as_crispy_field }}
-                    <input class="btn btn-primary" type="submit" value="Submit">
                 </div>
+                <input class="btn btn-primary" type="submit" value="Submit">
             </div>
         </div>
     </form>

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 
 class Flock(models.Model):
@@ -7,7 +8,10 @@ class Flock(models.Model):
     birds_count = models.IntegerField(verbose_name='birds')
     breed = models.CharField(max_length=64)
     notes = models.CharField(max_length=255)
+    location = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.name
 
 class Feed(models.Model):
     # Feed holds records of difreent kind of feeds
@@ -15,17 +19,20 @@ class Feed(models.Model):
     ingredients = models.CharField(max_length=255)
     notes = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Weather(models.Model):
     # weather will keep weather data on record day
-    location = models.CharField(max_length=64)
+
     av_temp = models.SmallIntegerField()
     description = models.CharField(max_length=64)
 
 
 class CoupeDay(models.Model):
     # record of one day in coupe
-    date = models.DateField(unique=True)
+    date = models.DateField(unique=True, default=date.today)
     collected_eggs = models.IntegerField()
     flock = models.ForeignKey(Flock, on_delete=models.PROTECT)
     notes = models.CharField(max_length=255)

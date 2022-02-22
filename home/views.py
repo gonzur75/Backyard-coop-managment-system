@@ -1,13 +1,25 @@
+
+import requests
+from django.db.models import Sum, Avg
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from home.forms import FlockForm
-from home.models import Flock
+from home.forms import FlockForm, FeedForm, CoupeDayForm
+from home.models import Flock, Feed, CoupeDay, Weather
 
 
 class HomeView(View):
     def get(self, request):
-        return render(request, 'home/index.html')
+        flock_info = Flock.objects.get(pk=1)
+        bird_laying = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
+        # total_eggs_year =
+        ctx = {
+            'flock': flock_info,
+            'bird_laying': int(bird_laying['collected_eggs__avg'])
+        }
+        return render(request, 'home/index.html', ctx)
 
 
 class FlockView(View):
@@ -27,6 +39,75 @@ class FlockView(View):
             return self.get(request)
 
 
+class FeedView(View):
+    def get(self, request):
+        form = FeedForm()
+        feed_list = Feed.objects.all
+        ctx = {
+            'form': form,
+            'feed_list': feed_list
+        }
+        return render(request, 'home/feed-view.html', ctx)
+
+    def post(self, request):
+        form = FeedForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return self.get(request)
 
 
+class CoupeDayView(View):
+    def get(self, request):
+        # five_days_ago = datetime.date.today() - datetime.timedelta(days=5)
+        form = CoupeDayForm()
+        records = CoupeDay.objects.all()[:5]
+        ctx = {
+            'form': form,
+            'records': records
+        }
+        return render(request, 'home/records-view.html', ctx)
 
+    def post(self, request):
+        form = CoupeDayForm(request.POST)
+        flock = request.POST['flock']
+
+        url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=55af43a751e5bcd92360c46edba2ec1d'
+        location = Flock.objects.get(pk=flock).location
+        weather_data = requests.get(url.format(location)).json()
+
+        temperature = round((weather_data['main']['temp'] - 32) / 2)
+        weather_desc = weather_data['weather'][0]['description']
+        print(temperature)
+        print(weather_desc)
+        weather = Weather.objects.create(av_temp=temperature, description=weather_desc)
+
+        if form.is_valid():
+            print(form.cleaned_data)
+            data = form.cleaned_data
+            CoupeDay.objects.create(
+                date=data['date'],
+                collected_eggs=data['collected_eggs'],
+                flock=data['flock'],
+                notes=data['notes'],
+                weather=weather,
+                feed=data['feed'],
+                feed_amount_kg=data['feed_amount_kg']
+                )
+            return self.get(request)
+        else:
+            return HttpResponse('Record for this day already exist, you can only modify it')
+
+
+def egg_chart(request):
+    labels = []
+    data = []
+
+    queryset = CoupeDay.objects.values('date', 'collected_eggs')
+    for entry in queryset:
+        labels.append(entry['date'])
+        data.append(entry['collected_eggs'])
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
