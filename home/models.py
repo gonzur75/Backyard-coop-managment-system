@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 
+from django.urls import reverse
+
 
 class Flock(models.Model):
     # Flock holds data about flock
@@ -12,6 +14,10 @@ class Flock(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('home:flocks')
+
 
 class Feed(models.Model):
     # Feed holds records of difreent kind of feeds

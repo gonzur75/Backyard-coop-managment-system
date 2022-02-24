@@ -1,0 +1,43 @@
+{% load crispy_forms_filters %}
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+  <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mt-3">
+            <div class="card-body mb-3">
+                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
+                    <h1>Add a new flock</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-3 col-sm-3">
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.breed|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.birds_count|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.location|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ form.notes|as_crispy_field }}
+                </div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+</body>
+</html>

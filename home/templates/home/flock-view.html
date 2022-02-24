@@ -4,10 +4,14 @@
 {% load static %}
 {% block title %}flocks{% endblock %}
 
+
 {% block content %}
+
+            {% include 'partial/_flock_form.html' %}
+
     <body class="bg-light">
 
-    <div class="card mb-3 ">
+    <div class="card mb-3 mt-3">
         <div class="card-body">
             <h1> List of all flocks </h1>
         </div>
@@ -27,8 +31,8 @@
                 </div>
                 <div class="col-3 card-body  ">
                     <div class="btn-group-vertical ">
-                        <a href="#" class="btn btn-outline-danger m-3 ">Remove</a>
-                        <a href="#" class="btn btn-outline-success m-3">Modify</a>
+                        <a href="{% url 'home:flock-delete' pk=flock.pk %}" class="btn btn-outline-danger m-3 ">Remove</a>
+                        <a href="{% url 'home:flock-update' pk=flock.id %}" class="btn btn-outline-success m-3">Modify</a>
                     </div>
                 </div>
             </div>
@@ -41,38 +45,5 @@
             </div>
         </div>
     {% endfor %}
-
-
-
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="card mt-3">
-            <div class="card-body mb-3">
-                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
-                    <h1>Add a new flock</h1>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="mb-3 col-sm-3">
-                        {{ form.name|as_crispy_field }}
-                    </div>
-                    <div class="mb-3 col-sm-3">
-                        {{ form.breed|as_crispy_field }}
-                    </div>
-                    <div class="mb-3 col-sm-3">
-                        {{ form.birds_count|as_crispy_field }}
-                    </div>
-                    <div class="mb-3 col-sm-3">
-                        {{ form.location|as_crispy_field }}
-                    </div>
-                </div>
-                <div class="mb-3">
-                    {{ form.notes|as_crispy_field }}
-                </div>
-                <input class="btn btn-primary" type="submit" value="Submit">
-            </div>
-        </div>
-    </form>
     </body>
 {% endblock %}

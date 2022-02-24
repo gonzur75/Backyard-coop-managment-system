@@ -4,7 +4,9 @@ from django.db.models import Sum, Avg
 
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import UpdateView, DeleteView
 
 from home.forms import FlockForm, FeedForm, CoupeDayForm
 from home.models import Flock, Feed, CoupeDay, Weather
@@ -14,10 +16,11 @@ class HomeView(View):
     def get(self, request):
         flock_info = Flock.objects.get(pk=1)
         bird_laying = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
-        # total_eggs_year =
+        total_eggs_year = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
+        bird_laying = round((int(bird_laying['collected_eggs__avg']) / flock_info.birds_count) * 100)
         ctx = {
             'flock': flock_info,
-            'bird_laying': int(bird_laying['collected_eggs__avg'])
+            'bird_laying': bird_laying
         }
         return render(request, 'home/index.html', ctx)
 
@@ -37,6 +40,17 @@ class FlockView(View):
         if form.is_valid():
             form.save()
             return self.get(request)
+
+
+class FlockUpdateView(UpdateView):
+    model = Flock
+    fields = ['name', 'birds_count', 'breed', 'notes', 'location']
+    template_name = 'home/flock-view.html'
+
+
+class FlockDeleteView(DeleteView):
+    model = Flock
+    success_url = reverse_lazy('home:flocks')
 
 
 class FeedView(View):
@@ -80,7 +94,6 @@ class CoupeDayView(View):
         print(temperature)
         print(weather_desc)
         weather = Weather.objects.create(av_temp=temperature, description=weather_desc)
-
         if form.is_valid():
             print(form.cleaned_data)
             data = form.cleaned_data
