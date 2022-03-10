@@ -13,6 +13,7 @@ from home.models import Flock, Feed, CoupeDay, Weather
 
 
 class HomeView(View):
+
     def get(self, request):
         flock_info = Flock.objects.get(pk=1)
         bird_laying = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
