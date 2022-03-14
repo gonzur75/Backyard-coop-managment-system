@@ -1,6 +1,6 @@
-from django.db import models
 from datetime import date
 
+from django.db import models
 from django.urls import reverse
 
 
@@ -28,6 +28,9 @@ class Feed(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('home:feed')
+
 
 class Weather(models.Model):
     # weather will keep weather data on record day
@@ -45,4 +48,3 @@ class CoupeDay(models.Model):
     weather = models.OneToOneField(Weather, on_delete=models.CASCADE)
     feed = models.ForeignKey(Feed, on_delete=models.PROTECT)
     feed_amount_kg = models.DecimalField(max_digits=4, decimal_places=1)
-

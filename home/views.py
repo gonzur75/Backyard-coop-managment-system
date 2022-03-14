@@ -1,9 +1,7 @@
-
 import requests
-from django.db.models import Sum, Avg
-
+from django.db.models import Avg
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, DeleteView
@@ -71,6 +69,13 @@ class FeedView(View):
             return self.get(request)
 
 
+class FeedUpdateView(UpdateView):
+
+    model = Feed
+    fields = ['name', 'notes', 'ingredients']
+    template_name = 'home/feed-view.html'
+
+
 class CoupeDayView(View):
     def get(self, request):
         # five_days_ago = datetime.date.today() - datetime.timedelta(days=5)
@@ -106,7 +111,7 @@ class CoupeDayView(View):
                 weather=weather,
                 feed=data['feed'],
                 feed_amount_kg=data['feed_amount_kg']
-                )
+            )
             return self.get(request)
         else:
             return HttpResponse('Record for this day already exist, you can only modify it')
