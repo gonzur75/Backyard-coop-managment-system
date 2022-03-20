@@ -2,7 +2,7 @@ import os.path
 
 import django
 import pytest
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from faker import Faker
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
@@ -11,6 +11,12 @@ django.setup()
 from home.models import Feed
 
 faker = Faker("pl_PL")
+
+
+@pytest.mark.django_db
+def test_feed_view_get_request(client, set_up):
+    response = client.get(reverse_lazy('home:feed'))
+    assert response.status_code == 200
 
 
 @pytest.mark.django_db
@@ -28,8 +34,18 @@ def test_update_feed(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_feed(client, set_up):
-
+def test_delete_feed_get_request(client, set_up):
+    """test whether feed confirm delete template is displayed"""
     feed_to_delete = Feed.objects.first()
-    response = client.get(reverse('home:feed-delete', kwargs={'pk': feed_to_delete.id}))
+    response = client.get(reverse('home:feed-delete', kwargs={'pk': feed_to_delete.id}), follow=True)
+    delete_txt = f"delete {feed_to_delete.name}"
+    assert delete_txt in str(response.content)
 
+
+@pytest.mark.django_db
+def test_delete_feed_post_request(client, set_up):
+    """ test weather object is deleted """
+    feed_to_delete = Feed.objects.first()
+    response = client.post(reverse('home:feed-delete', kwargs={'pk': feed_to_delete.id}), follow=True)
+    assert response.status_code == 200
+    assert feed_to_delete not in Feed.objects.all()

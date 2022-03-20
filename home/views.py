@@ -70,10 +70,14 @@ class FeedView(View):
 
 
 class FeedUpdateView(UpdateView):
-
     model = Feed
     fields = ['name', 'notes', 'ingredients']
     template_name = 'home/feed-view.html'
+
+
+class FeedDeleteView(DeleteView):
+    model = Feed
+    success_url = reverse_lazy('home:feed')
 
 
 class CoupeDayView(View):
