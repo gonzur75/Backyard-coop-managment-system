@@ -3,7 +3,7 @@
 venv
 *.pyc
 media
-db_sqlite3
+db.sqlite3
 python/
 mypython/
 media/

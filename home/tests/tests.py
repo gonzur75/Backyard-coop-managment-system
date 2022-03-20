@@ -26,7 +26,10 @@ def test_update_feed(client, set_up):
     assert feed_object.name == new_name
     assert feed_object.ingredients == new_ingredients
 
+
 @pytest.mark.django_db
 def test_delete_feed(client, set_up):
-    feed_to_update = Feed.objects.first()
-    response = client.get(reverse('home:feed-delete'))
+
+    feed_to_delete = Feed.objects.first()
+    response = client.get(reverse('home:feed-delete', kwargs={'pk': feed_to_delete.id}))
+
