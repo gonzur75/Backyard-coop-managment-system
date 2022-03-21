@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block title %}feed{% endblock %}
+
+{% block content %}
+    <body class="bg-light">
+    <div class="card mb-3 ">
+        <div class="card-body row">
+            <div class="col-9">
+                 <h1> List of Feeds </h1>
+            </div>
+            <div class="col-3">
+                <a href="{% url 'home:feed-create' %}" class="btn btn-outline-primary m-3">Add new feed</a>
+            </div>
+
+
+        </div>
+    </div>
+    {% for feed in feed_list %}
+        <div class="card mb3">
+            <div class="row">
+                <div class="col-9">
+                    <div>
+                        <div class="card-body mb-3">
+                            <h5 class="card-title">{{ feed.name }}</h5>
+                            <p class="card-text">Feed ingredients: {{ feed.ingredients}} </p>
+                            <p class="card-text">Notes for this feed: {{ feed.notes }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 card-body  ">
+                    <div class="btn-group-vertical ">
+                        <a href="{% url 'home:feed-delete' pk=feed.id %}" class="btn btn-outline-danger m-3">Remove</a>
+                        <a href="{% url 'home:feed-update' pk=feed.id %}" class="btn btn-outline-success m-3">Modify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% empty %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5> No feeds in database yet. Pleas add one below </h5>
+            </div>
+        </div>
+    {% endfor %}
+
+    </body>
+{% endblock %}

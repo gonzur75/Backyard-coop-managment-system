@@ -7,13 +7,19 @@
 
 {% block content %}
 
-            {% include 'partial/_flock_form.html' %}
 
     <body class="bg-light">
 
-    <div class="card mb-3 mt-3">
-        <div class="card-body">
-            <h1> List of all flocks </h1>
+     <div class="card mb-3 ">
+        <div class="card-body row">
+            <div class="col-9">
+                 <h1> List of Flocks </h1>
+            </div>
+            <div class="col-3">
+                <a href="{% url 'home:flocks-create' %}" class="btn btn-outline-primary m-3">Add new flock</a>
+            </div>
+
+
         </div>
     </div>
     {% for flock in flock_list %}

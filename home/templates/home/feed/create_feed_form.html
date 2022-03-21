@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block title %}create feed{% endblock %}
+
+{% block content %}
+        <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mt-3">
+            <div class="card-body mb-3">
+                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
+
+                    {% if object %}<h1>Modify feed</h1>{% else %} <h1>Add a new Feed</h1>{% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3 ">
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                <div class="row">
+                    <div class="mb-3 col-sm-6">
+                        {{ form.ingredients|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                        {{ form.notes|as_crispy_field }}
+                    </div>
+                </div>
+                    <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+{% endblock %}

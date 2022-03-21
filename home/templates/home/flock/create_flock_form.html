@@ -1,6 +1,10 @@
+{% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
-<html>
+{% block title %}add flock{% endblock %}
+{% block content%}
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -14,7 +18,7 @@
         <div class="card mt-3">
             <div class="card-body mb-3">
                 <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
-                    <h1>Add a new flock</h1>
+                    {% if object %}<h1>Modify flock</h1>{% else %} <h1>Add a new Flock</h1>{% endif %}
                 </div>
             </div>
             <div class="card-body">
@@ -35,9 +39,9 @@
                 <div class="mb-3">
                     {{ form.notes|as_crispy_field }}
                 </div>
-                <input class="btn btn-primary" type="submit" value="Submit">
+                <input class="btn btn-primary" type="submit" value="{% if object %}Modify feed{% else %} Confirm{% endif %}">
             </div>
         </div>
     </form>
 </body>
-</html>
+{% endblock %}

@@ -20,7 +20,7 @@ class Flock(models.Model):
 
 
 class Feed(models.Model):
-    # Feed holds records of difreent kind of feeds
+    # feed holds records of difreent kind of feeds
     name = models.CharField(max_length=64)
     ingredients = models.CharField(max_length=255)
     notes = models.CharField(max_length=255)

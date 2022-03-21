@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import UpdateView, DeleteView, CreateView
 
 from home.forms import FlockForm, FeedForm, CoupeDayForm
 from home.models import Flock, Feed, CoupeDay, Weather
@@ -32,7 +32,7 @@ class FlockView(View):
             'form': form,
             'flock_list': flock_list
         }
-        return render(request, 'home/flock-view.html', ctx)
+        return render(request, 'home/flock/flock-view.html', ctx)
 
     def post(self, request):
         form = FlockForm(request.POST)
@@ -41,15 +41,23 @@ class FlockView(View):
             return self.get(request)
 
 
+class FlockCreateView(CreateView):
+    model = Flock
+    form_class = FlockForm
+    template_name = 'home/flock/create_flock_form.html'
+    success_url = reverse_lazy('home:flocks')
+
+
 class FlockUpdateView(UpdateView):
     model = Flock
-    fields = ['name', 'birds_count', 'breed', 'notes', 'location']
-    template_name = 'home/flock-view.html'
+    form_class = FlockForm
+    template_name = 'home/flock/create_flock_form.html'
 
 
 class FlockDeleteView(DeleteView):
     model = Flock
     success_url = reverse_lazy('home:flocks')
+    template_name = "home/flock/flock_confirm_delete.html"
 
 
 class FeedView(View):
@@ -60,7 +68,7 @@ class FeedView(View):
             'form': form,
             'feed_list': feed_list
         }
-        return render(request, 'home/feed-view.html', ctx)
+        return render(request, 'home/feed/feed-view.html', ctx)
 
     def post(self, request):
         form = FeedForm(request.POST)
@@ -69,15 +77,23 @@ class FeedView(View):
             return self.get(request)
 
 
+class FeedCreateView(CreateView):
+    model = Feed
+    template_name = 'home/feed/create_feed_form.html'
+    success_url = reverse_lazy('home:feed')
+    form_class = FeedForm
+
+
 class FeedUpdateView(UpdateView):
     model = Feed
-    fields = ['name', 'notes', 'ingredients']
-    template_name = 'home/feed-view.html'
+    form_class = FeedForm
+    template_name = 'home/feed/create_feed_form.html'
 
 
 class FeedDeleteView(DeleteView):
     model = Feed
     success_url = reverse_lazy('home:feed')
+    template_name = 'home/feed/feed_confirm_delete.html'
 
 
 class CoupeDayView(View):
