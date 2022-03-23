@@ -1,7 +1,7 @@
 import requests
 from django.db.models import Avg
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, DeleteView, CreateView
@@ -80,7 +80,7 @@ class CoupeDayView(View):
     def get(self, request):
         # five_days_ago = datetime.date.today() - datetime.timedelta(days=5)
         form = CoupeDayForm()
-        records = CoupeDay.objects.all()[:5]
+        records = CoupeDay.objects.all()
         ctx = {
             'form': form,
             'records': records
@@ -133,14 +133,14 @@ def egg_chart(request):
 
 
 class RecordCreateView(CreateView):
-    model = CoupeDay
-    form_class = CoupeDayForm
-    template_name = 'home/record/create_record_form.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'form': CoupeDayForm()}
+        return render(request, 'home/record/create_record_form.html', context)
 
     def post(self, request, *args, **kwargs):
         form = CoupeDayForm(request.POST)
-        print(request.POST)
-        flock = form.data['flock']
+        flock = request.POST['flock']
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=55af43a751e5bcd92360c46edba2ec1d'
         location = Flock.objects.get(pk=flock).location
         weather_data = requests.get(url.format(location)).json()
@@ -162,7 +162,7 @@ class RecordCreateView(CreateView):
                 feed=data['feed'],
                 feed_amount_kg=data['feed_amount_kg']
             )
-            return self.get(request)
+            return redirect('home:records')
         else:
             return HttpResponse('Record for this day already exist, you can only modify it')
 
