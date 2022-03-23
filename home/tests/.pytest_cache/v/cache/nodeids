@@ -1,0 +1,17 @@
+[
+  "tests.py::test_add_feed",
+  "tests.py::test_create_feed",
+  "tests.py::test_create_feed_",
+  "tests.py::test_delete_feed",
+  "tests.py::test_delete_feed_get_request",
+  "tests.py::test_delete_feed_post_request",
+  "tests.py::test_feed_view",
+  "tests.py::test_feed_view_get_request",
+  "tests.py::test_update_feed",
+  "tests_feed.py::test_create_feed",
+  "tests_feed.py::test_delete_feed_get_request",
+  "tests_feed.py::test_delete_feed_post_request",
+  "tests_feed.py::test_feed_view_get_request",
+  "tests_feed.py::test_object",
+  "tests_feed.py::test_update_feed"
+]

@@ -48,3 +48,10 @@ class CoupeDay(models.Model):
     weather = models.OneToOneField(Weather, on_delete=models.CASCADE)
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     feed_amount_kg = models.DecimalField(max_digits=4, decimal_places=1)
+
+    def __str__(self):
+        return f"record from {date}"
+
+    def get_absolute_url(self):
+        return reverse('home:records')
+

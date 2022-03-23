@@ -26,19 +26,9 @@ class HomeView(View):
 
 class FlockView(View):
     def get(self, request):
-        form = FlockForm()
         flock_list = Flock.objects.all()
-        ctx = {
-            'form': form,
-            'flock_list': flock_list
-        }
+        ctx = {'flock_list': flock_list}
         return render(request, 'home/flock/flock-view.html', ctx)
-
-    def post(self, request):
-        form = FlockForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return self.get(request)
 
 
 class FlockCreateView(CreateView):
@@ -62,19 +52,9 @@ class FlockDeleteView(DeleteView):
 
 class FeedView(View):
     def get(self, request):
-        form = FeedForm()
         feed_list = Feed.objects.all
-        ctx = {
-            'form': form,
-            'feed_list': feed_list
-        }
+        ctx = {'feed_list': feed_list}
         return render(request, 'home/feed/feed-view.html', ctx)
-
-    def post(self, request):
-        form = FeedForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return self.get(request)
 
 
 class FeedCreateView(CreateView):
@@ -105,12 +85,62 @@ class CoupeDayView(View):
             'form': form,
             'records': records
         }
-        return render(request, 'home/records-view.html', ctx)
+        return render(request, 'home/record/records-view.html', ctx)
 
-    def post(self, request):
+    # def post(self, request):
+    #     form = CoupeDayForm(request.POST)
+    #     flock = request.POST['flock']
+    #
+    #     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=55af43a751e5bcd92360c46edba2ec1d'
+    #     location = Flock.objects.get(pk=flock).location
+    #     weather_data = requests.get(url.format(location)).json()
+    #
+    #     temperature = round((weather_data['main']['temp'] - 32) / 2)
+    #     weather_desc = weather_data['weather'][0]['description']
+    #     print(temperature)
+    #     print(weather_desc)
+    #     weather = Weather.objects.create(av_temp=temperature, description=weather_desc)
+    #     if form.is_valid():
+    #         print(form.cleaned_data)
+    #         data = form.cleaned_data
+    #         CoupeDay.objects.create(
+    #             date=data['date'],
+    #             collected_eggs=data['collected_eggs'],
+    #             flock=data['flock'],
+    #             notes=data['notes'],
+    #             weather=weather,
+    #             feed=data['feed'],
+    #             feed_amount_kg=data['feed_amount_kg']
+    #         )
+    #         return self.get(request)
+    #     else:
+    #         return HttpResponse('Record for this day already exist, you can only modify it')
+
+
+def egg_chart(request):
+    labels = []
+    data = []
+
+    queryset = CoupeDay.objects.values('date', 'collected_eggs')
+    for entry in queryset:
+        labels.append(entry['date'])
+        data.append(entry['collected_eggs'])
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+
+class RecordCreateView(CreateView):
+    model = CoupeDay
+    form_class = CoupeDayForm
+    template_name = 'home/record/create_record_form.html'
+
+    def post(self, request, *args, **kwargs):
         form = CoupeDayForm(request.POST)
-        flock = request.POST['flock']
-
+        print(request.POST)
+        flock = form.data['flock']
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=55af43a751e5bcd92360c46edba2ec1d'
         location = Flock.objects.get(pk=flock).location
         weather_data = requests.get(url.format(location)).json()
@@ -137,16 +167,13 @@ class CoupeDayView(View):
             return HttpResponse('Record for this day already exist, you can only modify it')
 
 
-def egg_chart(request):
-    labels = []
-    data = []
+class RecordUpdateView(UpdateView):
+    model = CoupeDay
+    form_class = CoupeDayForm
+    template_name = 'home/record/create_record_form.html'
 
-    queryset = CoupeDay.objects.values('date', 'collected_eggs')
-    for entry in queryset:
-        labels.append(entry['date'])
-        data.append(entry['collected_eggs'])
 
-    return JsonResponse(data={
-        'labels': labels,
-        'data': data,
-    })
+class RecordDeleteView(DeleteView):
+    model = CoupeDay
+    success_url = reverse_lazy('home:records')
+    template_name = "home/record/record_confirm_delete.html"

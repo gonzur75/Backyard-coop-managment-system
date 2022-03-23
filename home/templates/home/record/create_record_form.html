@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}records{% endblock %}
+
+{% block content %}
+
+ <form action="" method="post">
+        {% csrf_token %}
+        <div class="card mt-3">
+            <div class="card-body mb-3">
+                <div class="card-header mb-3" style="height: 75px; margin: 8px; align-content: center">
+                    <h1>Add a reckord</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div aria-label="liable" class="mb-3 col-sm-3">
+                        {{ form.date|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.collected_eggs|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.flock|as_crispy_field }}
+                    </div>
+                </div><div class="row">
+                    <div aria-label="liable" class="mb-3 col-sm-3">
+                        {{ form.feed|as_crispy_field }}
+                    </div>
+                    <div class="mb-3 col-sm-3">
+                        {{ form.feed_amount_kg|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ for }}
+                    {{ form.notes|as_crispy_field }}
+                    {{ form.weather }}
+                </div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+{% endblock %}
