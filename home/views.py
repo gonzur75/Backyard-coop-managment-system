@@ -121,7 +121,7 @@ def egg_chart(request):
     labels = []
     data = []
 
-    queryset = CoupeDay.objects.values('date', 'collected_eggs')
+    queryset = CoupeDay.objects.all().order_by('-date').values('date', 'collected_eggs')
     for entry in queryset:
         labels.append(entry['date'])
         data.append(entry['collected_eggs'])
