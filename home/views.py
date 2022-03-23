@@ -120,15 +120,22 @@ class CoupeDayView(View):
 def egg_chart(request):
     labels = []
     data = []
+    data_temp = []
+    data_layers = []
+    queryset = CoupeDay.objects.all().order_by('-date').values('date', 'collected_eggs', 'weather', 'flock')
 
-    queryset = CoupeDay.objects.all().order_by('-date').values('date', 'collected_eggs')
     for entry in queryset:
         labels.append(entry['date'])
         data.append(entry['collected_eggs'])
-
+        data_temp.append(Weather.objects.get(pk=entry['weather']).av_temp)
+        data_layers.append(Flock.objects.get(pk=entry['flock']).birds_count)
+    print(data_layers)
     return JsonResponse(data={
         'labels': labels,
         'data': data,
+        'data_temp': data_temp,
+        'data_layers': data_layers
+
     })
 
 

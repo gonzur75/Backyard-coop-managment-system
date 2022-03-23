@@ -82,13 +82,35 @@
                         type: 'bar',
                         data: {
                             labels: data.labels,
-                            datasets: [{
+                            datasets: [
+                                {
                                 label: 'date',
+                                backgroundColor: 'red',
+                                data: data.data,
+                                stack: 'Stack 0'
+                                },
+                                {
+                                type: 'line',
+                                label: 'Average temperature',
+                                data: data.data_temp
+
+                            },
+                                {
+                                label: 'Layers',
                                 backgroundColor: 'blue',
-                                data: data.data
+                                data: data.data_layers,
+                                    stack: 'Stack 0'
                             }]
                         },
                         options: {
+                            scales:{
+                                y: {
+                                    stacked: true
+                                },
+                                x: {
+                                    stacked: true
+                                },
+                            },
                             responsive: true,
                             legend: {
                                 position: 'top',
