@@ -134,7 +134,7 @@ def egg_chart(request):
         'labels': labels,
         'data': data,
         'data_temp': data_temp,
-        'data_layers': data_layers
+        'data_layers': data_layers,
 
     })
 

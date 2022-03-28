@@ -1,4 +1,3 @@
-import datetime
 import random
 
 from faker import Faker
@@ -19,6 +18,7 @@ def flock_object():
 def get_weather_object():
     return Weather.objects.create(description=faker.name(), av_temp=random.randint(1, 25))
 
+
 def fake_flock_data():
     fake_data = {
         "name": faker.name(),
@@ -29,6 +29,7 @@ def fake_flock_data():
     }
     return fake_data
 
+
 def fake_record_data():
     fake_data = {'date': faker.date(),
                  'collected_eggs': random.randint(1, 30),
@@ -38,5 +39,3 @@ def fake_record_data():
                  'feed': feed_object(),
                  'feed_amount_kg': random.randint(1, 3)}
     return fake_data
-
-

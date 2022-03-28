@@ -42,8 +42,8 @@ def test_update_record(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_flock_get_request(client, set_up):
-    """test whether record confirm delete template is displayed"""
+def test_delete_record_get_request(client, set_up):
+    """test if record confirm delete template is displayed"""
     record_to_delete = CoupeDay.objects.first()
     response = client.get(reverse('home:record-delete', kwargs={'pk': record_to_delete.id}), follow=True)
     delete_txt = f"Confirm delete"
@@ -51,9 +51,9 @@ def test_delete_flock_get_request(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_flock_post_request(client, set_up):
-    """ test weather object is deleted """
-    flock_to_delete = flock_object()
-    response = client.post(reverse('home:flock-delete', kwargs={'pk': flock_to_delete.id}), follow=True)
+def test_delete_record_post_request(client, set_up):
+    """ test if object is deleted """
+    record_to_delete = CoupeDay.objects.first()
+    response = client.post(reverse('home:record-delete', kwargs={'pk': record_to_delete.id}), follow=True)
     assert response.status_code == 200
-    assert flock_to_delete not in Flock.objects.all()
+    assert record_to_delete not in Flock.objects.all()

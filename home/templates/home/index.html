@@ -11,7 +11,7 @@
     <div class="row align-items-center">
 
         <!-- flock name card -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -29,7 +29,7 @@
             </div>
         </div>
         <!-- Bird count card -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <!-- % of bird laying eggs-->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -84,31 +84,33 @@
                             labels: data.labels,
                             datasets: [
                                 {
-                                label: 'date',
-                                backgroundColor: 'red',
-                                data: data.data,
-                                stack: 'Stack 0'
+                                    type: 'line',
+                                    label: 'Average temperature',
+                                    data: data.data_temp,
+                                    borderColor: "blue",
+                                    stack: 'Stack 1'
                                 },
                                 {
-                                type: 'line',
-                                label: 'Average temperature',
-                                data: data.data_temp
-
-                            },
-                                {
-                                label: 'Layers',
-                                backgroundColor: 'blue',
-                                data: data.data_layers,
+                                    label: 'eggs collected',
+                                    backgroundColor: 'yellow',
+                                    data: data.data,
                                     stack: 'Stack 0'
-                            }]
+                                },
+
+                                {
+                                    label: 'layers',
+                                    backgroundColor: 'green',
+                                    data: data.data_layers,
+                                    stack: 'Stack 0'
+                                }]
                         },
                         options: {
-                            scales:{
+                            scales: {
                                 y: {
-                                    stacked: true
+                                    stacked: true,
                                 },
                                 x: {
-                                    stacked: true
+                                    stacked: true,
                                 },
                             },
                             responsive: true,
@@ -128,7 +130,7 @@
         });
     </script>
     <!-- Area Chart -->
-    <div class="col-md-9  align-items-center">
+    <div class="col-md-12  align-items-center">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

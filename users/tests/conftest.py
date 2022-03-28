@@ -12,25 +12,6 @@ from home.tests.utils import fake_record_data, get_weather_object, fake_flock_da
 from home.models import Feed, Flock, CoupeDay
 
 
-@pytest.fixture
-def client():
-    client = Client()
-    return client
-
-
-@pytest.fixture
-def set_up():
-    for _ in range(3):
-        get_weather_object()
-
-    for _ in range(5):
-        Feed.objects.create(name=faker.name(),
-                            notes=faker.paragraph(nb_sentences=3),
-                            ingredients=faker.paragraph(nb_sentences=3))
-    for _ in range(2):
-        Flock.objects.create(**fake_flock_data())
-    for _ in range(5):
-        CoupeDay.objects.create(**fake_record_data())
 
 
 @pytest.fixture(scope='function')
@@ -41,3 +22,7 @@ def user(db, django_user_model):
         password='TestPass123'
     )
     yield user
+
+@pytest.fixture(scope='function')
+def login(user, client):
+    client.login(username='TestUser', password='TestPass123')
