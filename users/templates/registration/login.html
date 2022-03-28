@@ -8,5 +8,6 @@
     {{ form|crispy }}
     <input class="btn btn-primary" type="submit" value="Confirm">
     </form>
+    <a href="{% url 'password_reset' %}">Reset password</a>
     <a class="m-5" href="{% url 'landing'%}">Take me back</a>
 {% endblock %}

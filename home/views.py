@@ -26,7 +26,7 @@ class HomeView(View):
 
 class FlockView(View):
     def get(self, request):
-        flock_list = Flock.objects.all()
+        flock_list = Flock.objects.all().order_by('-date')
         ctx = {'flock_list': flock_list}
         return render(request, 'home/flock/flock-view.html', ctx)
 
