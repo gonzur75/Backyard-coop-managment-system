@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.views import View
 
 from . import views
-
+from .views import RegisterView
 
 
 class LandingPageView(View):
@@ -14,6 +14,8 @@ class LandingPageView(View):
 urlpatterns = [
     path('landing/', LandingPageView.as_view(), name='landing'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('register/', RegisterView.as_view(), name='register'),
+
 
 ]
 

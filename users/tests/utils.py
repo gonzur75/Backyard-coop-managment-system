@@ -1,7 +1,7 @@
 from django.urls import reverse
 
 USER_OLD_PASSWORD = 'TestPass123'
-USER_NEW_PASSWORD ='TestPass1234'
+USER_NEW_PASSWORD = 'TestPass1234'
 
 
 def utils_extract_uid_and_store_token_in_session(client, user):

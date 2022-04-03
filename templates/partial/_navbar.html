@@ -39,7 +39,7 @@
                     <div class="navbar-nav d-flex justify-content-end">
                         <span class="navbar-text m-3">Hello, {{ user.username|default:'Friend' }}!</span>
                         <a href="{% url 'login' %}" class="btn btn-outline-success me-2 m-3" type="button">Login</a>
-                        <button class="btn btn-outline-success me-2 m-3" type="button">Signup</button>
+                        <a href="{% url 'register' %}" class="btn btn-outline-success me-2 m-3" type="button">SignUp</a>
                     </div>
                 {% endif %}
     </div>
