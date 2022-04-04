@@ -12,7 +12,7 @@ class LandingPageView(View):
 
 
 urlpatterns = [
-    path('landing/', LandingPageView.as_view(), name='landing'),
+    path('', LandingPageView.as_view(), name='landing'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', RegisterView.as_view(), name='register'),
 

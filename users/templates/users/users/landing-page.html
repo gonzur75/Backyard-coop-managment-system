@@ -8,7 +8,19 @@
 <body>
 
 {% block content %}
-<h1>Welcome to Backyard Home Management System</h1>
+     <!-- Header-->
+        <header class="py-5">
+            <div class="container px-lg-5">
+                <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+                    <div class="m-4 m-lg-5">
+                        <h1 class="display-5 fw-bold">A warm welcome to Backyard Home Management System</h1>
+                        <p class="fs-4">Sign up or login to start recording your coupe data</p>
+                        <a href="{% url 'login' %}" class="btn btn-outline-success me-2 m-3" type="button">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-success me-2 m-3" type="button">SignUp</a>
+                    </div>
+                </div>
+            </div>
+        </header>
 {% endblock %}
 </body>
 </html>
