@@ -11,13 +11,13 @@ faker = Faker("pl_PL")
 
 
 @pytest.mark.django_db
-def test_flock_view_get_request(client):
+def test_flock_view_get_request(client, login):
     response = client.get(reverse_lazy('home:flocks'))
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_create_flock(client):
+def test_create_flock(client, login):
     name = faker.name()
     ingredients = faker.paragraph(nb_sentences=2)
     notes = faker.paragraph(nb_sentences=2)
@@ -37,7 +37,7 @@ def flock_object():
 
 
 @pytest.mark.django_db
-def test_update_flock(client, set_up):
+def test_update_flock(client, set_up, login):
     flock_test = flock_object()
     new_name = faker.name()
     new_notes = faker.paragraph(nb_sentences=2)
@@ -54,7 +54,7 @@ def test_update_flock(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_flock_get_request(client, set_up):
+def test_delete_flock_get_request(client, set_up, login):
     """test whether flock confirm delete template is displayed"""
     flock_to_delete = Flock.objects.first()
     response = client.get(reverse('home:flock-delete', kwargs={'pk': flock_to_delete.id}), follow=True)
@@ -63,7 +63,7 @@ def test_delete_flock_get_request(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_flock_post_request(client, set_up):
+def test_delete_flock_post_request(client, set_up, login):
     """ test weather object is deleted """
     flock_to_delete = flock_object()
     response = client.post(reverse('home:flock-delete', kwargs={'pk': flock_to_delete.id}), follow=True)

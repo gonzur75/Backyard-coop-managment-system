@@ -1,11 +1,13 @@
 from datetime import date
 
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
 
 class Flock(models.Model):
     # Flock holds data about flock
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     birds_count = models.IntegerField(verbose_name='birds')
     breed = models.CharField(max_length=64)
@@ -20,7 +22,9 @@ class Flock(models.Model):
 
 
 class Feed(models.Model):
-    # feed holds records of difreent kind of feeds
+    # feed holds records of
+    # difreent kind of feeds
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     ingredients = models.CharField(max_length=255)
     notes = models.CharField(max_length=255)
@@ -41,6 +45,7 @@ class Weather(models.Model):
 
 class CoupeDay(models.Model):
     # record of one day in coupe
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     date = models.DateField(unique=True, default=date.today)
     collected_eggs = models.IntegerField()
     flock = models.ForeignKey(Flock, on_delete=models.CASCADE)
@@ -54,4 +59,3 @@ class CoupeDay(models.Model):
 
     def get_absolute_url(self):
         return reverse('home:records')
-

@@ -9,18 +9,18 @@ faker = Faker("pl_PL")
 
 
 @pytest.mark.django_db
-def test_feed_view_get_request(client):
+def test_feed_view_get_request(client,login):
     response = client.get(reverse_lazy('home:feed'))
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_create_feed(client):
+def test_create_feed(client, login):
     name = faker.name()
     ingredients = faker.paragraph(nb_sentences=2)
     notes = faker.paragraph(nb_sentences=2)
-    response = client.post('/feed/create/',
-                           {'name': name,
+    response = client.post('/feed/create/',{
+                            'name': name,
                             'ingredients': ingredients,
                             'notes': notes})
 
@@ -29,7 +29,7 @@ def test_create_feed(client):
 
 
 @pytest.mark.django_db
-def test_update_feed(client, set_up):
+def test_update_feed(client, set_up, login):
     new_name = faker.name()
     new_ingredients = faker.paragraph(nb_sentences=2)
     response = client.post(reverse('home:feed-update', kwargs={'pk': feed_object().id}),
@@ -41,7 +41,7 @@ def test_update_feed(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_feed_get_request(client, set_up):
+def test_delete_feed_get_request(client, set_up, login):
     """test whether feed confirm delete template is displayed"""
     feed_to_delete = Feed.objects.first()
     response = client.get(reverse('home:feed-delete', kwargs={'pk': feed_object().id}), follow=True)
@@ -50,7 +50,7 @@ def test_delete_feed_get_request(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_feed_post_request(client, set_up):
+def test_delete_feed_post_request(client, set_up, login):
     """ test weather object is deleted """
     feed_to_delete = feed_object()
     response = client.post(reverse('home:feed-delete', kwargs={'pk': feed_object().id}), follow=True)

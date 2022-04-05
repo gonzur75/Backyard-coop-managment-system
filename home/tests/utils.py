@@ -19,9 +19,10 @@ def get_weather_object():
     return Weather.objects.create(description=faker.name(), av_temp=random.randint(1, 25))
 
 
-def fake_flock_data():
+def fake_flock_data(user):
     fake_data = {
-        "name": faker.name(),
+        'author': user,
+        'name': faker.name(),
         'notes': faker.paragraph(nb_sentences=2),
         'breed': faker.name(),
         'birds_count': random.randint(1, 40),
@@ -30,8 +31,10 @@ def fake_flock_data():
     return fake_data
 
 
-def fake_record_data():
-    fake_data = {'date': faker.date(),
+def fake_record_data(user):
+    fake_data = {
+                 'author': user,
+                 'date': faker.date(),
                  'collected_eggs': random.randint(1, 30),
                  'notes': faker.paragraph(nb_sentences=2),
                  'flock': flock_object(),

@@ -2,20 +2,21 @@ import pytest
 from django.urls import reverse, reverse_lazy
 from django.test import RequestFactory
 from home.models import Flock, CoupeDay
+from home.tests.conftest import user
 from home.tests.utils import feed_object, flock_object, fake_record_data, faker
 from home.views import RecordCreateView
 
 
 @pytest.mark.django_db
-def test_records_view_get_request(client):
+def test_records_view_get_request(client, login):
     response = client.get(reverse_lazy('home:records'))
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_create_record(client, set_up):
+def test_create_record(client, set_up, login):
     """test whether record is saved to database"""
-    record_data = fake_record_data()
+    record_data = fake_record_data(user)
     record_data['flock'] = record_data['flock'].id
     record_data['feed'] = record_data['feed'].id
     response = client.post('/record/create/', data=record_data, follow=True)
@@ -24,7 +25,7 @@ def test_create_record(client, set_up):
 
 
 @pytest.mark.django_db
-def test_update_record(client, set_up):
+def test_update_record(client, set_up, login):
     """test whether record is updated in database"""
     record_test = CoupeDay.objects.first()
     new_notes = faker.paragraph(nb_sentences=2)
@@ -42,7 +43,7 @@ def test_update_record(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_record_get_request(client, set_up):
+def test_delete_record_get_request(client, set_up, login):
     """test if record confirm delete template is displayed"""
     record_to_delete = CoupeDay.objects.first()
     response = client.get(reverse('home:record-delete', kwargs={'pk': record_to_delete.id}), follow=True)
@@ -51,7 +52,7 @@ def test_delete_record_get_request(client, set_up):
 
 
 @pytest.mark.django_db
-def test_delete_record_post_request(client, set_up):
+def test_delete_record_post_request(client, set_up, login):
     """ test if object is deleted """
     record_to_delete = CoupeDay.objects.first()
     response = client.post(reverse('home:record-delete', kwargs={'pk': record_to_delete.id}), follow=True)

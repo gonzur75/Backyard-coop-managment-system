@@ -19,18 +19,19 @@ def client():
 
 
 @pytest.fixture
-def set_up():
+def set_up(user):
     for _ in range(3):
         get_weather_object()
 
     for _ in range(5):
-        Feed.objects.create(name=faker.name(),
+        Feed.objects.create(author=user,
+                            name=faker.name(),
                             notes=faker.paragraph(nb_sentences=3),
                             ingredients=faker.paragraph(nb_sentences=3))
     for _ in range(2):
-        Flock.objects.create(**fake_flock_data())
+        Flock.objects.create(**fake_flock_data(user))
     for _ in range(5):
-        CoupeDay.objects.create(**fake_record_data())
+        CoupeDay.objects.create(**fake_record_data(user))
 
 
 @pytest.fixture(scope='function')
@@ -41,3 +42,8 @@ def user(db, django_user_model):
         password='TestPass123'
     )
     yield user
+
+
+@pytest.fixture(scope='function')
+def login(user, client):
+    client.login(username='TestUser', password='TestPass123')
