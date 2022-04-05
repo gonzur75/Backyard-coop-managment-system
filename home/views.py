@@ -171,6 +171,12 @@ class RecordCreateView(LoginRequiredMixin, CreateView):
     form_class = CoupeDayForm
     success_url = reverse_lazy('home:records')
 
+    def get_form_kwargs(self):
+        kwargs = super(RecordCreateView, self).get_form_kwargs()
+        print(kwargs)
+        kwargs['author'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         flock = form.instance.flock
         print(flock)

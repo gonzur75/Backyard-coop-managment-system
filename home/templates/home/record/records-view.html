@@ -40,10 +40,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for record in records %}
+                        {% for record in object_list %}
 
                             <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">{{ forloop.counter  }}</th>
                                 <td>{{ record.date }}</td>
                                 <td>{{ record.collected_eggs }}</td>
                                 <td>{{ record.flock.name }}</td>
@@ -65,7 +65,7 @@
                         {% empty %}
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    <h5> No records in database yet. Pleas add one below </h5>
+                                    <h5> No records in database yet. Pleas add one </h5>
                                 </div>
                             </div>
                         {% endfor %}
