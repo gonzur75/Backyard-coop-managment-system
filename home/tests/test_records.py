@@ -30,7 +30,8 @@ def test_update_record(client, set_up, login):
     record_test = CoupeDay.objects.first()
     new_notes = faker.paragraph(nb_sentences=2)
     response = client.post(reverse('home:record-update', kwargs={'pk': record_test.id}),
-                           {'date': record_test.date,
+                           {
+                            'date': record_test.date,
                             'notes': new_notes,
                             'collected_eggs': record_test.collected_eggs,
                             'flock': record_test.flock.pk,

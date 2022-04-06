@@ -6,19 +6,29 @@ from django.urls import reverse
 
 
 class Flock(models.Model):
-    # Flock holds data about flock
+    """ Holds common information about your flock """
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
     birds_count = models.IntegerField(verbose_name='birds')
     breed = models.CharField(max_length=64)
     notes = models.CharField(max_length=255)
-    location = models.CharField(max_length=64)
+    location = models.OneToOneField('Location', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('home:flocks')
+
+
+class Location(models.Model):
+    """Store Longitude and Latitude of Flock location for open weather api"""
+    name = models.CharField(max_length=64)
+    lat = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
+    lon = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
+
+    def __int__(self):
+        return f'Flocks location lon, lat'
 
 
 class Feed(models.Model):

@@ -4,12 +4,16 @@ from .models import Flock, Feed, CoupeDay
 
 
 class FlockForm(forms.ModelForm):
+    location = forms.CharField(max_length=64)
+
     class Meta:
         model = Flock
-        fields = {'name', 'birds_count', 'breed', 'notes', 'location'}
+        fields = {'name', 'birds_count', 'breed', 'notes'}
         widgets = {
-            'notes': forms.Textarea(attrs={'rows': 5})
+            'notes': forms.Textarea(attrs={'rows': 5}),
+            'location': forms.TextInput()
         }
+
 
 
 class FeedForm(forms.ModelForm):
@@ -30,6 +34,10 @@ class CoupeDayForm(forms.ModelForm):
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 5}),
             'date': forms.DateInput(attrs={'type': 'date'})
+        }
+        help_texts = {
+            'date': 'Pleas be advised that weather data is only available for last five days, '
+                    'records with older dates will have weather data from date of creating'
         }
 
     def __init__(self, *args, **kwargs):
