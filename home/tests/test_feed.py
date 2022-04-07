@@ -9,7 +9,7 @@ faker = Faker("pl_PL")
 
 
 @pytest.mark.django_db
-def test_feed_view_get_request(client,login):
+def test_feed_view_get_request(client, login):
     response = client.get(reverse_lazy('home:feed'))
     assert response.status_code == 200
 

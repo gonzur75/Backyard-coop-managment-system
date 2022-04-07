@@ -7,8 +7,7 @@ from django.test import Client
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')  # bez tego nie działa
 django.setup()
 
-from home.tests.test_feed import faker
-from home.tests.utils import fake_record_data, get_weather_object, fake_flock_data
+from home.tests.utils import fake_record_data, get_weather_object, fake_flock_data, fake_feed_data
 from home.models import Feed, Flock, CoupeDay
 
 
@@ -24,10 +23,7 @@ def set_up(user):
         get_weather_object()
 
     for _ in range(5):
-        Feed.objects.create(author=user,
-                            name=faker.name(),
-                            notes=faker.paragraph(nb_sentences=3),
-                            ingredients=faker.paragraph(nb_sentences=3))
+        Feed.objects.create(**fake_feed_data(user))
     for _ in range(2):
         Flock.objects.create(**fake_flock_data(user))
     for _ in range(5):
