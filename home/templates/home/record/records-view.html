@@ -21,56 +21,80 @@
     </div>
 
     <div class="card mb3 mt-3">
-        <div class="row">
-            <div class="col">
-                <div>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Number of collected eggs</th>
-                            <th scope="col">Flock name</th>
-                            <th scope="col">Weather on the day</th>
-                            <th scope="col">Feed that was used:</th>
-                            <th scope="col">Feed amount in kg</th>
-                            <th scope="col">Notes for this record</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for record in object_list %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Number of collected eggs</th>
+                <th scope="col">Flock name</th>
+                <th scope="col">Weather on the day</th>
+                <th scope="col">Feed that was used:</th>
+                <th scope="col">Feed amount in kg</th>
+                <th scope="col">Notes for this record</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in page_obj %}
 
-                            <tr>
-                                <th scope="row">{{ forloop.counter  }}</th>
-                                <td>{{ record.date }}</td>
-                                <td>{{ record.collected_eggs }}</td>
-                                <td>{{ record.flock.name }}</td>
-                                <td>{{ record.weather.description }}, <br>temp- {{ record.weather.av_temp }}°C,</td>
-                                <td>{{ record.feed.name }}</td>
-                                <td>{{ record.feed_amount_kg }}</td>
-                                <td>{{ record.notes }}</td>
-                                <td>
-                                    <div class="col-3 card-body mb3  ">
-                                        <div class="btn-group" role="grup" aria-label="Basic example">
-                                            <a href="{% url 'home:record-delete' pk=record.pk %}"
-                                               class="btn btn-outline-danger m-3 ">Remove</a>
-                                            <a href="{% url 'home:record-update' pk=record.pk %}"
-                                               class="btn btn-outline-success m-3">Modify</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% empty %}
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5> No records in database yet. Pleas add one </h5>
-                                </div>
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.collected_eggs }}</td>
+                    <td>{{ record.flock.name }}</td>
+                    <td>{{ record.weather.description }}, <br>temp- {{ record.weather.av_temp }}°C,</td>
+                    <td>{{ record.feed.name }}</td>
+                    <td>{{ record.feed_amount_kg }}</td>
+                    <td>{{ record.notes }}</td>
+                    <td>
+                        <div class="col-3 card-body mb3  ">
+                            <div class="btn-group" role="grup" aria-label="Basic example">
+                                <a href="{% url 'home:record-delete' pk=record.pk %}"
+                                   class="btn btn-outline-danger m-3 ">Remove</a>
+                                <a href="{% url 'home:record-update' pk=record.pk %}"
+                                   class="btn btn-outline-success m-3">Modify</a>
                             </div>
-                        {% endfor %}
+                        </div>
+                    </td>
+                </tr>
 
-                        </tbody>
-                    </table>
+            {% empty %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5> No records in database yet. Pleas add one </h5>
+                    </div>
+                </div>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-outline-primary "
+                           href="?page={{ page_obj.previous_page_number }}">&laquo; previous</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary " href="?page=1">first</a>
+                    {% endif %}
+                </li>
+
+                <span class="page-item btn btn-outline-primary ">
+                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+             <li class="page-item">
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-outline-primary "
+                           href="?page={{ page_obj.next_page_number }}">next &raquo;</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary " href="?page={{ page_obj.paginator.num_pages }}">last</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </div>
     </body>
 {% endblock %}

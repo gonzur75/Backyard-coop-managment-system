@@ -17,7 +17,7 @@ from home.models import Flock, Feed, CoupeDay, Weather, Location
 class HomeView(LoginRequiredMixin, View):
 
     def get(self, request):
-        flock_info = Flock.objects.get(pk=1)
+        flock_info = Flock.objects.filter(author=request.user).first()
         bird_laying = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
         total_eggs_year = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
         bird_laying = round((int(bird_laying['collected_eggs__avg']) / flock_info.birds_count) * 100)
@@ -47,15 +47,12 @@ class FlockCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         location_name = self.request.POST.get('location')
-        print(location_name)
         google_geocode_key = os.environ.get('GOOGLE_GEOCODE_KEY')
         get_location_lat_lng = f'https://maps.googleapis.com/maps/api/geocode' \
                                f'/json?address={location_name}&key={google_geocode_key}'
         geo_data = requests.get(get_location_lat_lng).json()
         location_lat = geo_data['results'][0]['geometry']['location']['lat']
         location_lng = geo_data['results'][0]['geometry']['location']['lng']
-        print(location_lng, location_lat)
-
         location_db = Location.objects.create(name=location_name,
                                               lon=location_lng,
                                               lat=location_lat)
@@ -111,6 +108,8 @@ class FeedDeleteView(LoginRequiredMixin, DeleteView):
 class CoupeDayView(LoginRequiredMixin, ListView):
     model = CoupeDay
     template_name = 'home/record/records-view.html'
+    ordering = ['-date']
+    paginate_by = 5
 
     def get_queryset(self):
         user = self.request.user
@@ -196,14 +195,13 @@ class RecordCreateView(LoginRequiredMixin, CreateView):
         kwargs['author'] = self.request.user
         return kwargs
 
-    # TODO: dodać opcję daty
+
     def form_valid(self, form):
         flock = form.instance.flock
         if more_than_five_days(form.instance.date):
             time = datetime.datetime.today().strftime('%s')
         else:
             time = form.instance.date.strftime('%s')
-        print(time)
         location = Flock.objects.get(pk=flock.id).location
         lat = location.lat
         lon = location.lon
@@ -212,7 +210,7 @@ class RecordCreateView(LoginRequiredMixin, CreateView):
               '/timemachine?lat={}&lon={}&dt={}&units=metric&appid={}'
         weather_data = requests.get(url.format(lat, lon, time, openweather_api_key)).json()
         print(weather_data)
-        temperature = len([int(record['temp']) for record in weather_data['hourly']]) / len(weather_data['hourly'])
+        temperature = sum([int(record['temp']) for record in weather_data['hourly']]) / len(weather_data['hourly'])
         temp_check = [int(record['temp']) for record in weather_data['hourly']]
         print(temperature)
         print(temp_check)
