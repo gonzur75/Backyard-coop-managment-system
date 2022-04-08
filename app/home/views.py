@@ -18,9 +18,12 @@ class HomeView(LoginRequiredMixin, View):
 
     def get(self, request):
         flock_info = Flock.objects.filter(author=request.user).first()
-        bird_laying = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
-        total_eggs_year = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
-        bird_laying = round((int(bird_laying['collected_eggs__avg']) / flock_info.birds_count) * 100)
+        if CoupeDay.objects.first():
+            total_eggs_year = CoupeDay.objects.all().aggregate(Avg('collected_eggs'))
+            bird_laying = round((int(total_eggs_year['collected_eggs__avg']) / flock_info.birds_count) * 100)
+        else:
+            bird_laying = 0
+
         ctx = {
             'flock': flock_info,
             'bird_laying': bird_laying

@@ -1,0 +1,32 @@
+services:
+  django:
+    build: ./app
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DEBUG: 1
+    volumes:
+      - ./app:/app
+    env_file:
+      - ./app/env/.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+      - redis
+  redis:
+    image: redis:latest
+  postgres:
+    # sprawdzi czy jest postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+        # volumy anonimowe
+      - postgres:/var/lib/postgresql/data
+    #zczyta dane do logowania db z pliku
+    env_file:
+      - ./app/env/.env
+
+volumes:
+  #docker stworzy anonimowy volume dla postgresa
+  postgres:
