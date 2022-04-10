@@ -10,7 +10,7 @@ This project was also first that I have deployed to heroku through docker image
 Application is created with:
 
 * Python 3.8
-* Django 4
+* Django 4Screenshot from 2022-04-10 13-36-08
 * Postgres
 * Docker
 * Docker-compose
@@ -26,6 +26,8 @@ Change .env-default to .env and edit with your settings
 
 To run it use 
 ```docker-compose -d --build```
+![Screenshot from 2022-04-10 13-36-08](https://user-images.githubusercontent.com/90859229/162616246-3b7a94b2-a233-4943-b79c-36f4653afea2.png)
+
 
 ## Use
 you can log in as admin:
