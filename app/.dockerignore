@@ -1,0 +1,12 @@
+env/.env
+.idea
+venv
+*.pyc
+media
+db.sqlite3
+python/
+mypython/
+media/
+.coverage
+
+

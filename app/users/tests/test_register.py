@@ -14,5 +14,5 @@ def test_user_registration(client):
                                           })
     assert response.status_code == 302
     user = get_user_model()
-    assert user.objects.count() == 1
+    assert user.objects.count() == 2
 

@@ -9,16 +9,13 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import environ
 import os
 from pathlib import Path
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
 
+import dj_database_url
+import environ
 
-
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,14 +26,16 @@ env.read_env(os.path.join(BASE_DIR, 'env/.env'))
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-
+SECRET_KEY = env('SECRET_KEY', default='foo')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # env('DEBUG') in production
+DEBUG = env('DEBUG', default=0)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'obscure-sands-56196.herokuapp.com',
+                 'https://obscure-sands-56196.herokuapp.com']
+INTERNAL_IPS = ALLOWED_HOSTS
 
 # Application definition
 
@@ -53,16 +52,14 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
 
-
     # local
     'home.apps.HomeConfig',
 
-
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,7 +88,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -102,6 +98,30 @@ DATABASES = {
     }
 }
 
+"""
+Local development database settings. 
+"""
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('POSTGRES_ENGINE', 'django.db.backends.sqlite3'),
+#         'NAME': os.environ.get('POSTGRES_DB', os.path.join(BASE_DIR, 'db.sqlite3')),
+#         'USER': os.environ.get('POSTGRES_USER', 'user'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+"""
+Heroku and docker database settings. Uncomment when you want to use it.
+"""
+
+DATABASES_URL = os.environ.get('DATABASE_URL')
+# dj-database-url paczka do podpinania database
+db_from_env = dj_database_url.config(
+    default=DATABASES_URL, conn_max_age=500, ssl_require=False,
+)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -121,7 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -133,18 +152,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/'),
     # os.path.join(BASE_DIR, 'venv/lib64/python3.8/site-packages/highcharts')
 ]
-
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -159,7 +180,7 @@ LOGIN_REDIRECT_URL = "landing"
 
 LOGOUT_REDIRECT_URL = 'landing'
 
+CSRF_TRUSTED_ORIGINS = ('https://obscure-sands-56196.herokuapp.com', 'http://0.0.0.0:8000')
+
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
-
-

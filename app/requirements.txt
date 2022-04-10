@@ -10,12 +10,13 @@ Django==4.0.2
 django-braces==1.15.0
 django-crispy-forms==1.14.0
 django-environ==0.8.1
-django-on-heroku==1.1.2
+
 Faker==13.3.1
 gunicorn==20.1.0
 idna==3.3
 iniconfig==1.1.1
 packaging==21.3
+
 pluggy==1.0.0
 psycopg2-binary==2.9.3
 py==1.11.0

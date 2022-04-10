@@ -5,7 +5,8 @@ from django.urls import reverse, reverse_lazy
 from faker import Faker
 
 from home.models import Flock
-from home.tests.utils import feed_object
+from home.tests.utils import feed_object, flock_object
+
 
 faker = Faker("pl_PL")
 
@@ -32,8 +33,7 @@ def test_create_flock(client, login):
     assert response.status_code == 302
 
 
-def flock_object():
-    return Flock.objects.first()
+
 
 
 @pytest.mark.django_db
