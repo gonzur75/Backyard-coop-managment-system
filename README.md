@@ -26,9 +26,6 @@ Change .env-default to .env and edit with your settings
 
 To run it use 
 ```docker-compose -d --build```
-![Screenshot from 2022-04-10 13-36-08](https://user-images.githubusercontent.com/90859229/162616246-3b7a94b2-a233-4943-b79c-36f4653afea2.png)
-
-
 ## Use
 you can log in as admin:
 Admin panel: 'http://0.0.0.0:8000/admin/'
@@ -38,10 +35,12 @@ When you are logged in you can add your own flock, feed, and records,
 app will add weather data for your flock location from open weather appi,
 once you have some records you can check dashboard chart to see them.
 
-##Run tests
+![Screenshot from 2022-04-10 13-36-08](https://user-images.githubusercontent.com/90859229/162616294-3ef3caca-3748-4245-ba60-318443c43d89.png)
+
+## Run tests
 ```docker-compose run tests```
 
-##Thanks for checking
+## Thanks for checking
 Marcin Wlodarczyk
     
     - GitHub: https://github.com/gonzzur75
