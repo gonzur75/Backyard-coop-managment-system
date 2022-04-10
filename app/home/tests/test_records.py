@@ -1,10 +1,10 @@
 import pytest
 from django.urls import reverse, reverse_lazy
-from django.test import RequestFactory
+
 from home.models import Flock, CoupeDay
 from home.tests.conftest import user
 from home.tests.utils import feed_object, flock_object, fake_record_data, faker
-from home.views import RecordCreateView
+
 
 
 @pytest.mark.django_db

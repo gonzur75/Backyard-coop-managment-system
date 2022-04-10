@@ -48,9 +48,9 @@ def test_update_flock(client, set_up, login):
                             'breed': flock_test.breed,
                             'location': flock_test.location})
     assert response.status_code == 302
-    object_feed = Flock.objects.get(id=feed_object().id)
-    assert object_feed.name == new_name
-    assert object_feed.notes == new_notes
+    test_object = Flock.objects.get(id=flock_test.id)
+    assert test_object.name == new_name
+    assert test_object.notes == new_notes
 
 
 @pytest.mark.django_db

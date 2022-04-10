@@ -19,10 +19,10 @@ def test_create_feed(client, login):
     name = faker.name()
     ingredients = faker.paragraph(nb_sentences=2)
     notes = faker.paragraph(nb_sentences=2)
-    response = client.post('/feed/create/',{
-                            'name': name,
-                            'ingredients': ingredients,
-                            'notes': notes})
+    response = client.post('/feed/create/', {
+        'name': name,
+        'ingredients': ingredients,
+        'notes': notes})
 
     assert Feed.objects.last().name == name
     assert response.status_code == 302

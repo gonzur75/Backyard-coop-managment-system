@@ -60,7 +60,7 @@
                     </td>
                 </tr>
 
-            {% empty %}
+                {% empty %}
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5> No records in database yet. Pleas add one </h5>
@@ -85,7 +85,7 @@
                 <span class="page-item btn btn-outline-primary ">
                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
-             <li class="page-item">
+                <li class="page-item">
                     {% if page_obj.has_next %}
                         <a class="btn btn-outline-primary "
                            href="?page={{ page_obj.next_page_number }}">next &raquo;</a>

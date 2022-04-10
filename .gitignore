@@ -11,3 +11,8 @@ media/
 
 
 /app/MYREADME.MD
+/app/htmlcov/
+/app/coverage.xml
+*,cover
+/app/coverage.lcov
+/app/coverage.json
