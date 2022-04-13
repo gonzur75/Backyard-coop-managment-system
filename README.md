@@ -1,4 +1,4 @@
-# Backyard-coupe-managment-system
+# Backyard-coop-managment-system
 
 ### [Check it on heroku]( https://obscure-sands-56196.herokuapp.com/flocks/)
 
