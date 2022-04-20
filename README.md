@@ -1,4 +1,4 @@
-# Backyard-coupe-managment-system
+# Backyard-coop-managment-system
 
 ### [Check it on heroku]( https://obscure-sands-56196.herokuapp.com/flocks/)
 
@@ -11,7 +11,7 @@ This project was also first that I have deployed to heroku through docker image
 Application is created with:
 
 * Python 3.8
-* Django 4Screenshot from 2022-04-10 13-36-08
+* Django 4
 * Postgres
 * Docker
 * Docker-compose
