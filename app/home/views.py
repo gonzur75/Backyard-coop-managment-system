@@ -171,7 +171,7 @@ def egg_chart(request):
         data.append(entry['collected_eggs'])
         data_temp.append(Weather.objects.get(pk=entry['weather']).av_temp)
         data_layers.append(Flock.objects.get(pk=entry['flock']).birds_count)
-    print(data_layers)
+
     return JsonResponse(data={
         'labels': labels,
         'data': data,

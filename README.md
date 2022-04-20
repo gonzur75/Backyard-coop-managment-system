@@ -55,7 +55,7 @@ Marcin Wlodarczyk
     - CodeWars: https://www.codewars.com/users/gonzur75
 
 License
-Copyright © 2022 MArcin Wlodarczyk.
+Copyright © 2022 Marcin Wlodarczyk.
 This project is Beerware licensed.
 
 

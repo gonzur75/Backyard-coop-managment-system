@@ -15,7 +15,6 @@ class FlockForm(forms.ModelForm):
         }
 
 
-
 class FeedForm(forms.ModelForm):
     class Meta:
         model = Feed
@@ -42,7 +41,7 @@ class CoupeDayForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         author = kwargs.pop('author')
-        super(CoupeDayForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['flock'].queryset = Flock.objects.filter(author=author)
         self.fields['flock'].empty_label = 'No flocks, please add one'
         self.fields['feed'].queryset = Feed.objects.filter(author=author)

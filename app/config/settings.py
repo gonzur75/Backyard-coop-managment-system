@@ -180,7 +180,7 @@ LOGIN_REDIRECT_URL = "landing"
 
 LOGOUT_REDIRECT_URL = 'landing'
 
-CSRF_TRUSTED_ORIGINS = ('https://obscure-sands-56196.herokuapp.com', 'http://0.0.0.0:8000')
+CSRF_TRUSTED_ORIGINS = ('https://obscure-sands-56196.herokuapp.com', 'http://0.0.0.0:8000', 'http://127.0.0.1/')
 
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
