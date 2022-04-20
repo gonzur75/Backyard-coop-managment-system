@@ -3,10 +3,8 @@ import random
 import pytest
 from django.urls import reverse, reverse_lazy
 from faker import Faker
-
 from home.models import Flock
-from home.tests.utils import feed_object, flock_object
-
+from home.tests.utils import flock_object
 
 faker = Faker("pl_PL")
 
@@ -31,9 +29,6 @@ def test_create_flock(client, login):
 
     assert Flock.objects.last().name == name
     assert response.status_code == 302
-
-
-
 
 
 @pytest.mark.django_db
